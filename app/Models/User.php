@@ -46,4 +46,20 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    /**
+     * A user can manage many rooms (as a manager).
+     */
+    public function managerRooms()
+    {
+        return $this->hasMany(Room::class, 'manager_id');
+    }
+
+    /**
+     * A user can have many rooms as a guest.
+     */
+    public function guestRooms()
+    {
+        return $this->hasMany(Room::class, 'guest_id');
+    }
 }

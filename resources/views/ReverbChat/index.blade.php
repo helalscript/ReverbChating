@@ -10,7 +10,7 @@
     <ul>
         @foreach($rooms as $room)
             <li>
-                <a href="{{ route('rooms.show', $room->id) }}">Join {{ $room->name }}</a>
+                <a href="{{ route('chat.show', $room->id) }}">Join {{ $room->name }}</a>
             </li>
         @endforeach
     </ul>

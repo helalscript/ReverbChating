@@ -17,6 +17,14 @@
     <input type="text" id="messageInput" placeholder="Type your message here..." autofocus>
     <button onclick="sendMessage()">Send</button>
 </div>
+<div>
+    <form action="{{route('send.message',$room->id)}}" method="POST" enctype="multipart/form-data">
+        @csrf
+        @method('POST')
+        <input type="text" name="message" id="">
+        <button type="submit">send</button>
+    </form>
+</div>
 
 <script>
 window.addEventListener('DOMContentLoaded', function () {

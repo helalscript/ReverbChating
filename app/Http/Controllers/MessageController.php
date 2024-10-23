@@ -11,21 +11,35 @@ use Illuminate\Support\Str;
 
 class MessageController extends Controller
 {
-    public function index(){
-        //
+    public function index()
+    {
+        $rooms = Room::all();
+        return view('ReverbChat.index', compact('rooms'));
     }
-    public function sendMessage(Request $request, $roomId){
-         // dd($request->all());
+    public function show(string $id)
+    {
+        $room = Room::with([
+            'guest:id,name',
+            'manager:id,name'
+        ])->findOrFail($id);
+        // dd($room);
+        return view('ReverbChat.chat',compact('room') );
+    }
+
+    public function sendMessage(Request $request, $roomId)
+    {
+        // dd($request->all());
         $request->validate([
             'message' => 'required|string',
         ]);
-        $userName = Auth::user()->name ;
+        $userName = Auth::user()->name;
         $messageContent = $request->input('message');
         $chatRoom = Room::find($roomId);
+        // dd($userName, $messageContent,$chatRoom);
         if (!$chatRoom || Auth::user()->id !== $chatRoom->manager_id) {
             return response()->json(['error' => 'Unauthorized or chat room not found.'], 403);
         }
-    
+
         $message = Message::create([
             'room_id' => $chatRoom->id,
             'user_id' => Auth::id(),
@@ -38,10 +52,12 @@ class MessageController extends Controller
         ]);
 
     }
-    public function getMessage(){
+    public function getMessage()
+    {
         //
     }
-    public function getRoom(){
+    public function getRoom()
+    {
         //
     }
 
